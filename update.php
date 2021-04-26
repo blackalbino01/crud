@@ -1,15 +1,11 @@
 <?php
 require_once "config.php";
  
-
 $name = "";
 $msg = "";
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     $id = $_POST["id"];
-    
-    } else{
-        $name = $name;
-    }
+    $name = $_POST["name"];
     
     
     if(empty($msg)){
@@ -33,6 +29,47 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     
     mysqli_close($conn);
 } 
+else{
+    
+    if(isset($_GET["id"]) && !empty($_GET["id"])){
+        
+        $id =  $_GET["id"];
+    
+        $sql = "SELECT * FROM course WHERE id = ?";
+        if($stmt = mysqli_prepare($conn, $sql)){
+            mysqli_stmt_bind_param($stmt, "i", $param_id);      
+            $param_id = $id;
+            
+            if(mysqli_stmt_execute($stmt)){
+                $result = mysqli_stmt_get_result($stmt);
+    
+                if(mysqli_num_rows($result) == 1){
+                    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                    
+                    $name = $row["name"];
+                } 
+                else{
+
+                    echo "Oops! Something went wrong. Please try again later.";
+                    exit();
+                }
+                
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+        }
+        
+        
+        mysqli_stmt_close($stmt);
+        
+        
+        mysqli_close($conn);
+    }  
+    else{
+        echo "Oops! Something went wrong. Please try again later.";
+        exit();
+    }
+}
 
 ?>
  
@@ -40,14 +77,14 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Record</title>
+    <title>Update</title>
     <?php
     require"header.php"
     ?>
 </head>
 <body style="background-color: grey"> 
     <div class="wrapper">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="mt-5">Update Course</h2>

@@ -66,6 +66,9 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] != '')) {
             </div>
         </div>        
     </div>
-    <a href="logout.php" style="position: relative; left: 600px; top: 240px;"><button type="submit" class="btn btn-primary">SignOut</button></a>
+    <a href="logout.php" style="position: relative; left: 550px; top: 20px;"><button type="submit" class="btn btn-primary">SignOut</button></a>
+    <?php
+    echo '<a href="resetpassword.php?id='.$_SESSION['id'].'" style="position: relative; left: 600px; top: 20px;"><button type="submit" class="btn btn-primary">Reset Password</button></a>';
+    ?>
 </body>
 </html>

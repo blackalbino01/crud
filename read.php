@@ -50,7 +50,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View Record</title>
+    <title>View</title>
     <?php
     require"header.php"
     ?>

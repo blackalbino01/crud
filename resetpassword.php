@@ -1,22 +1,22 @@
 <?php
-if(isset($_POST['new_password'])) {
-  
-  require'config.php';
-  $email = $_POST['email'];
-  $new_pass = $_POST['new_pass'];
-  $new_pass_c = $_POST['new_pass_c'];
-
-  if ($new_pass !== $new_pass_c) echo "Password do not match";
-
-  elseif ($new_pass === $new_pass_c) {
-
-  	$mysqli=$conn->prepare('UPDATE users SET password=$new_pass WHERE email = $email');
+	require"config.php";
+	$new_pass = "";
+	if(isset($_POST["id"]) && !empty($_POST["id"])){
+	    $id = $_POST["id"];
+	    $new_pass = $_POST["new_pass"];
+    	$phash = password_hash($new_pass, PASSWORD_DEFAULT);
+    	
+        $mysqli= $conn->prepare("UPDATE users SET password=? WHERE id=?");
+		$mysqli->bind_param('si',$phash,$id);
+		$mysqli->execute();
+            
+        header("location: welcome.php");
 
    
+    }
 
-    header('location: login.php');  
-  }
-}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -37,23 +37,16 @@ if(isset($_POST['new_password'])) {
 		}
 	</style>
 	<div class="newpassword">
-		<form class="login-form" action="resetpassword.php" method="post">
+		<form class="login-form" action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>"  method="post">
 			<h2 class="form-title">New password</h2>
-			<div class="form-group">
-				<label for="exampleInputEmail1">Email<span style="color: red;">*</span></label>
-				<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="email"  required>
-			</div>
 			<div class="form-group">
 				<label>New password</label>
 				<input type="password" name="new_pass">
 			</div>
-			<div class="form-group">
-				<label>Confirm new password</label>
-				<input type="password" name="new_pass_c">
-			</div>
-			<div class="form-group">
-				<button type="submit" name="new_password" class="login-btn">Submit</button>
-			</div>
+			
+			<input type="hidden" name="id" value="<?php echo $id; ?>"/>
+			<input type="submit" class="btn btn-primary" value="Submit">
+            <a href="welcome.php" class="btn btn-secondary ml-2">Cancel</a>
 		</form>
 	</div>
 </body>

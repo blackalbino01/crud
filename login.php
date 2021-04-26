@@ -19,6 +19,7 @@
 			if (password_verify($password, $user['password'])) {
 				session_start();
 				$_SESSION['login'] = "1";
+				$_SESSION['id'] = $user['id'];
 				header ("Location: welcome.php");
 			}
 			else {
@@ -61,7 +62,7 @@
 				<input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
 			</div>
 			<button type="submit" class="btn btn-primary">LogIn</button>
-			<p><a href="resetpassword.php">Reset your password?</a></p>
+			
 
 		</form>
 	</div>
